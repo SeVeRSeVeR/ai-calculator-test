@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-calculator.local/schemas/cpus.schema.json",
+  "title": "CPU Catalog Schema",
+  "description": "Валидация каталога CPU платформ для локального инференса",
+  "type": "object",
+  "required": ["metadata", "cpus"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["version", "collected_at"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d{4}\\.\\d{2}$"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "cpus": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CPU"
+      },
+      "minItems": 10,
+      "description": "Минимум 10 CPU платформ для разных сценариев"
+    }
+  },
+  "definitions": {
+    "CPU": {
+      "type": "object",
+      "required": ["id", "vendor", "model", "cores", "tdp_w", "class"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "vendor": {
+          "type": "string",
+          "enum": ["Intel", "AMD", "NVIDIA", "Apple"]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cores": {
+          "type": "integer",
+          "minimum": 8,
+          "description": "Кол-во физических ядер (threads не учитываются)"
+        },
+        "threads": {
+          "type": "integer",
+          "minimum": 16,
+          "description": "Кол-во потоков"
+        },
+        "tdp_w": {
+          "type": "integer",
+          "minimum": 65,
+          "maximum": 450,
+          "description": "TDP CPU в Вт"
+        },
+        "socket": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "enum": ["LGA1700", "AM5", "TRX4", "SP3", "FM2+", "soldered"]
+        },
+        "pcie_lanes": {
+          "type": ["integer", "null"],
+          "nullable": true,
+          "minimum": 16,
+          "maximum": 128,
+          "description": "PCIe линий (x16/x32/x64)"
+        },
+        "max_ram_gb": {
+          "type": ["integer", "null"],
+          "nullable": true,
+          "minimum": 64,
+          "maximum": 1024,
+          "description": "Максимальный объём RAM в системе (для workstation/server)"
+        },
+        "max_ram_slots": {
+          "type": ["integer", "null"],
+          "nullable": true,
+          "minimum": 2,
+          "maximum": 8,
+          "description": "Кол-во слотов RAM в материнской плате"
+        },
+        "class": {
+          "type": "string",
+          "enum": ["budget", "mid-range", "workstation", "server"],
+          "description": "Класс CPU по целевому сегменту"
+        },
+        "notes": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "description": "Примечания (например: «требует L3 кэша для токенизации»)"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,4 @@
+
+> ai-calculator@2026.11.0 typecheck
+> tsc --noEmit
+

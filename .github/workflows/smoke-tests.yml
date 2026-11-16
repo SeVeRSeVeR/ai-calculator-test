@@ -1,0 +1,20 @@
+name: Smoke Tests After Deploy
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'dist/**'
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build (для локального smoke-тестирования)
+        run: npm ci && npm run build
+        
+      # Если деплой на GitHub Pages — тесты запускаются там автоматически
+      # или можно добавить отдельный шаг с undici для проверки маршрутов

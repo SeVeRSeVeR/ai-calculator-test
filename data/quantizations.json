@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "version": "2026.11",
+    "collected_at": "2026-11-16T14:30:00Z"
+  },
+  "quantizations": [
+    {
+      "id": "fp16",
+      "name": "FP16",
+      "bytes_per_param": 2.0,
+      "kv_bytes_per_elem": 2,
+      "dtype_name": "FP16"
+    },
+    {
+      "id": "bf16",
+      "name": "BF16",
+      "bytes_per_param": 2.0,
+      "kv_bytes_per_elem": 2,
+      "dtype_name": "BF16"
+    },
+    {
+      "id": "fp8",
+      "name": "FP8 E4M3",
+      "bytes_per_param": 1.0,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "FP8",
+      "quantization_method": "fp8_e4m3"
+    },
+    {
+      "id": "int8",
+      "name": "INT8",
+      "bytes_per_param": 1.0,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "INT8",
+      "quantization_method": "int8"
+    },
+    {
+      "id": "q8_0",
+      "name": "Q8_0 (GGUF)",
+      "bytes_per_param": 1.06,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "Q8",
+      "quantization_method": "llama.cpp q8_0"
+    },
+    {
+      "id": "q6_k",
+      "name": "Q6_K (GGUF)",
+      "bytes_per_param": 0.82,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "Q6",
+      "quantization_method": "llama.cpp q6_k"
+    },
+    {
+      "id": "q5_k_m",
+      "name": "Q5_K_M (GGUF)",
+      "bytes_per_param": 0.70,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "Q5",
+      "quantization_method": "llama.cpp q5_k_m"
+    },
+    {
+      "id": "q4_k_m",
+      "name": "Q4_K_M (GGUF)",
+      "bytes_per_param": 0.55,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "Q4",
+      "quantization_method": "llama.cpp q4_k_m"
+    },
+    {
+      "id": "q3_k_m",
+      "name": "Q3_K_M (GGUF)",
+      "bytes_per_param": 0.43,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "Q3",
+      "quantization_method": "llama.cpp q3_k_m"
+    },
+    {
+      "id": "q4_0",
+      "name": "Q4_0 (GGUF)",
+      "bytes_per_param": 0.52,
+      "kv_bytes_per_elem": 0.5,
+      "dtype_name": "Q4",
+      "quantization_method": "llama.cpp q4_0"
+    },
+    {
+      "id": "q3_0",
+      "name": "Q3_0 (GGUF)",
+      "bytes_per_param": 0.37,
+      "kv_bytes_per_elem": 0.5,
+      "dtype_name": "Q3",
+      "quantization_method": "llama.cpp q3_0"
+    },
+    {
+      "id": "awq4",
+      "name": "AWQ-4bit",
+      "bytes_per_param": 0.55,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "AWQ4",
+      "quantization_method": "awq"
+    },
+    {
+      "id": "gptq4",
+      "name": "GPTQ-4bit",
+      "bytes_per_param": 0.55,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "GPTQ4",
+      "quantization_method": "gptq"
+    },
+    {
+      "id": "nf4",
+      "name": "NF4 (exL2)",
+      "bytes_per_param": 0.58,
+      "kv_bytes_per_elem": 1,
+      "dtype_name": "NF4",
+      "quantization_method": "llama.cpp nf4"
+    }
+  ]
+}

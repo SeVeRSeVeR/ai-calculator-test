@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-calculator.local/schemas/gpus.schema.json",
+  "title": "GPU Catalog Schema",
+  "description": "Валидация каталога GPU для локального LLM-инференса",
+  "type": "object",
+  "required": ["metadata", "gpus"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["version", "collected_at", "source_urls"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Версия каталога (YYYY.MM формат)",
+          "pattern": "^\\d{4}\\.\\d{2}$"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Дата и время сбора каталога (ISO 8601)"
+        },
+        "source_urls": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "URL источников для каждого класса GPU"
+        }
+      }
+    },
+    "gpus": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/GPU"
+      },
+      "minItems": 15,
+      "description": "Минимум 15 GPU позиций, покрывающих все классы"
+    }
+  },
+  "definitions": {
+    "GPU": {
+      "type": "object",
+      "required": [
+        "id", "vendor", "name", "vram_gb", "bandwidth_gbs", "tdp_w",
+        "class", "release_year"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Уникальный идентификатор GPU (lowercase, slug format)",
+          "minLength": 1,
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "vendor": {
+          "type": "string",
+          "enum": ["NVIDIA", "AMD", "Apple"]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vram_gb": {
+          "type": "integer",
+          "minimum": 6,
+          "description": "Объём видеопамяти в ГБ"
+        },
+        "bandwidth_gbs": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Пропускная способность памяти в GB/s"
+        },
+        "tdp_w": {
+          "type": "integer",
+          "minimum": 75,
+          "description": "TDP (Thermal Design Power) в Вт"
+        },
+        "nvlink": {
+          "type": ["boolean", "null"],
+          "nullable": true,
+          "description": "Поддержка NVLink (для NVIDIA)"
+        },
+        "slots": {
+          "type": ["integer", "null"],
+          "nullable": true,
+          "minimum": 1,
+          "description": "Кол-во физ. слотов в сервере"
+        },
+        "pcie_lanes": {
+          "type": ["integer", "null"],
+          "nullable": true,
+          "minimum": 8,
+          "description": "PCIe линий (consumer: 16, datacenter: 8)"
+        },
+        "fp8_tensor_cores": {
+          "type": ["boolean", "null"],
+          "nullable": true,
+          "description": "Поддержка FP8 тензорных ядер"
+        },
+        "class": {
+          "type": "string",
+          "enum": ["consumer", "prosumer", "datacenter"],
+          "description": "Класс GPU по целевому сегменту"
+        },
+        "release_year": {
+          "type": "integer",
+          "minimum": 2016,
+          "maximum": 2026,
+          "description": "Год выхода на рынок"
+        },
+        "unified_memory": {
+          "type": ["boolean", "null"],
+          "nullable": true,
+          "default": false,
+          "description": "Использует unified memory (Apple, DGX Spark)"
+        },
+        "rocm_support": {
+          "type": ["boolean", "null"],
+          "nullable": true,
+          "description": "Поддержка ROCm для AMD"
+        },
+        "bandwidth_source": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "enum": ["official", "computed", "third_party"],
+          "default": "official",
+          "description": "Источник данных о bandwidth"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

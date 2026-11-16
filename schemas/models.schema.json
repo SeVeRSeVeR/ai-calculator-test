@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-calculator.local/schemas/models.schema.json",
+  "title": "Models Catalog Schema",
+  "description": "Валидация каталога моделей для локального LLM-инференса",
+  "type": "object",
+  "required": ["metadata", "models"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["version", "collected_at"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d{4}\\.\\d{2}$"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Model"
+      },
+      "minItems": 25,
+      "description": "Минимум 25 моделей покрывающих все классы размеров"
+    }
+  },
+  "definitions": {
+    "Model": {
+      "type": "object",
+      "required": ["id", "name", "family", "params_total_b", "bytes_per_param"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "type": "string",
+          "enum": ["Llama", "Qwen", "Gemma", "Mistral", "DeepSeek", "Kimi"]
+        },
+        "params_total_b": {
+          "type": "number",
+          "minimum": 1,
+          "description": "Параметров в billions (total для dense, total для MoE)"
+        },
+        "params_active_b": {
+          "type": ["number", "null"],
+          "nullable": true,
+          "minimum": 1,
+          "description": "Активных параметров для MoE (null для dense моделей)"
+        },
+        "bytes_per_param": {
+          "type": ["number", "string"],
+          "enum": [
+            2.0,  // FP16/BF16
+            1.0,  // FP8, INT8, Q8_0
+            0.55, // AWQ-4bit, GPTQ-4bit, Q4_K_M
+            0.43  // Q3_K_M
+          ],
+          "description": "Размер параметров в ГБ/билин (зависит от квантизации)"
+        },
+        "n_layers": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Кол-во слоев архитектуры"
+        },
+        "n_kv_heads": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Кол-во KV heads (для GQA/MQA важно: использовать НЕ n_heads)"
+        },
+        "head_dim": {
+          "type": "integer",
+          "minimum": 32,
+          "maximum": 512,
+          "description": "Размер head в элементах (БРАТЬ ПРЯМО ИЗ config.json, НЕ hidden_size/n_heads)"
+        },
+        "max_context": {
+          "type": "integer",
+          "minimum": 4096,
+          "maximum": 8192000,
+          "description": "Максимальный контекст в токенах"
+        },
+        "license": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "enum": [
+            "mit", "apache-2.0", "llama3", "gemma2", "gemma", "other"
+          ],
+          "description": "Лицензия модели"
+        },
+        "commercial_ok": {
+          "type": ["boolean", "null"],
+          "nullable": true,
+          "description": "Разрешена ли коммерческая лицензия"
+        },
+        "status": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "enum": ["active", "announced", "deprecated"],
+          "default": "active"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

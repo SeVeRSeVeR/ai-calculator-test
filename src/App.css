@@ -1,0 +1,511 @@
+/**
+ * Глобальные стили для калькулятора (src/App.css)
+ * Адаптивный дизайн, доступность, темная тема по умолчанию
+ */
+
+/* === Базовые переменные === */
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --accent-primary: #e94560;
+  --accent-secondary: #533483;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --danger: #e74c3c;
+  --border-radius: 8px;
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* === Reset & Base === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* === Layout === */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab {
+  background-color: var(--bg-tertiary);
+  border: 2px solid transparent;
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  background-color: var(--bg-secondary);
+}
+
+.tab.active {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.app-footer {
+  background-color: var(--bg-secondary);
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Form Elements === */
+.form-section {
+  background-color: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-section h3 {
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.input-group {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.validated-input label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.validated-input input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.validated-input input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.validated-input input[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* === Error Messages === */
+.error-message {
+  color: var(--danger);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.warning-message {
+  color: var(--warning);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* === Buttons === */
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #c93850;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === Model Cards Grid === */
+.models-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.model-card {
+  background-color: var(--bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.model-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.model-card.selected {
+  border-color: var(--success);
+  box-shadow: 0 0 15px rgba(39, 174, 96, 0.3);
+}
+
+.model-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.model-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.model-family {
+  background-color: var(--bg-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.model-stats {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.stat-item .label {
+  color: var(--text-secondary);
+}
+
+.stat-item .value {
+  font-weight: 600;
+}
+
+.model-quantization {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.memory-breakdown {
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.memory-breakdown .label {
+  color: var(--text-secondary);
+  display: block;
+  font-size: 0.75rem;
+}
+
+.memory-breakdown .value {
+  font-weight: 600;
+}
+
+.memory-per-gpu,
+.performance {
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+}
+
+.performance .value {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+/* === Fit Status Badges === */
+.fit-status {
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.fit-full {
+  background-color: rgba(39, 174, 96, 0.2);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.fit-tight {
+  background-color: rgba(243, 156, 18, 0.2);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.fit-with-ram {
+  background-color: rgba(255, 215, 0, 0.2);
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.fit-no-fit {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* === Interconnect Badge === */
+.interconnect-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.interconnect-badge.nvlink {
+  background-color: rgba(39, 174, 96, 0.2);
+  color: var(--success);
+}
+
+/* === Warning Box === */
+.warning-box {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* === Loading State === */
+.loading-catalog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: var(--text-secondary);
+}
+
+/* === Error Message === */
+.error-message {
+  background-color: rgba(231, 76, 60, 0.2);
+  border-left: 4px solid var(--danger);
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: var(--border-radius);
+}
+
+.error-message button {
+  background-color: transparent;
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-left: 1rem;
+  padding: 0;
+}
+
+/* === Disclaimer === */
+.disclaimer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 1rem;
+}
+
+.disclaimer-section {
+  margin-bottom: 1.5rem;
+}
+
+.disclaimer-section h4 {
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.disclaimer-section span {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.disclaimer-warning {
+  background-color: rgba(243, 156, 18, 0.2);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--warning);
+  font-size: 0.8rem;
+}
+
+.data-sources-list,
+.documentation-links {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.data-sources-list li,
+.documentation-links li {
+  margin-bottom: 0.25rem;
+}
+
+.data-sources-list a,
+.documentation-links a {
+  color: var(--accent-primary);
+  font-size: 0.8rem;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .mode-tabs {
+    flex-direction: column;
+  }
+
+  .tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .models-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .input-group {
+    grid-template-columns: 1fr;
+  }
+
+  .app-main {
+    padding: 1rem 0.5rem;
+  }
+
+  .disclaimer-section h4 {
+    font-size: 0.8rem;
+  }
+
+  .disclaimer-section span {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1rem;
+  }
+
+  .tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .model-card {
+    padding: 0.75rem;
+  }
+
+  .stat-item,
+  .memory-breakdown,
+  .memory-per-gpu,
+  .performance {
+    font-size: 0.8rem;
+  }
+}
+
+/* === Accessibility === */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}

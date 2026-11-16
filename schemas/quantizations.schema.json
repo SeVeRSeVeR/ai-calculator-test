@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-calculator.local/schemas/quantizations.schema.json",
+  "title": "Quantizations Catalog Schema",
+  "description": "Валидация каталога методов квантизации",
+  "type": "object",
+  "required": ["metadata", "quantizations"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["version", "collected_at"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d{4}\\.\\d{2}$"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "quantizations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Quantization"
+      },
+      "minItems": 10,
+      "description": "Минимум 10 методов квантизации"
+    }
+  },
+  "definitions": {
+    "Quantization": {
+      "type": "object",
+      "required": ["id", "name", "bytes_per_param"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes_per_param": {
+          "type": ["number", "string"],
+          "enum": [
+            2.0,  // FP16/BF16 (~2 ГБ/билин параметров)
+            1.0,  // FP8, INT8, Q8_0
+            0.55, // AWQ-4bit, GPTQ-4bit, Q4_K_M, Q5_K_M
+            0.43, // Q3_K_M
+            0.70  // Q5_K_M (точнее: ~6.92 бит/параметр)
+          ],
+          "description": "Размер параметров в ГБ/билин"
+        },
+        "kv_bytes_per_elem": {
+          "type": ["number", "string"],
+          "enum": [
+            2,   // FP16 KV-кеш
+            1,   // FP8 KV-кеш, INT8
+            0.5, // 4-bit для Q4_0
+            0.375 // 3-bit для Q3_0
+          ],
+          "description": "Размер KV элемента в bytes (KV часто не квантуется так же)"
+        },
+        "dtype_name": {
+          "type": "string",
+          "description": "Название типа данных (FP16, BF16, INT8 и т.д.)"
+        },
+        "quantization_method": {
+          "type": ["string", "null"],
+          "nullable": true,
+          "enum": [
+            "full",      // FP16/BF16 полная точность
+            "int8",      // INT8 квантизация
+            "fp8_e4m3",  // FP8 E4M3 (стандарт)
+            "fp8_e5m2",  // FP8 E5M2
+            "awq",       // AWQ 4-bit
+            "gptq",      // GPTQ 4-bit
+            "llama.cpp q6_k",
+            "llama.cpp q5_k_m",
+            "llama.cpp q4_k_m",
+            "llama.cpp q3_k_m"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

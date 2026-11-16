@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "version": "2026.11",
+    "collected_at": "2026-11-16T14:30:00Z"
+  },
+  "engines": [
+    {
+      "id": "vllm",
+      "name": "vLLM",
+      "display_name": "vLLM",
+      "gpu_only": true,
+      "default_util_target": 0.90,
+      "overhead_gb": 1.5,
+      "supports_tp": true,
+      "kv_bytes_per_elem": 2,
+      "cuda_graphs": true,
+      "notes": "Пакетное предгенерирование (Paged Attention), резервирует ~10% VRAM через gpu_memory_utilization"
+    },
+    {
+      "id": "llama-cpp",
+      "name": "llama.cpp",
+      "display_name": "llama.cpp",
+      "gpu_only": false,
+      "default_util_target": 0.95,
+      "overhead_gb": 1.5,
+      "supports_tp": false,
+      "kv_bytes_per_elem": 2,
+      "cuda_graphs": false,
+      "notes": "Offload весов и KV в RAM через n_gpu_layers; compute buffer ~1–2 ГБ"
+    },
+    {
+      "id": "tgi",
+      "name": "TGI",
+      "display_name": "vLLM (TGI)",
+      "gpu_only": true,
+      "default_util_target": 0.90,
+      "overhead_gb": 1.5,
+      "supports_tp": true,
+      "kv_bytes_per_elem": 2,
+      "cuda_graphs": true,
+      "notes": "vLLM в режиме Text Generation Inference (для API)"
+    },
+    {
+      "id": "sglang",
+      "name": "SGLang",
+      "display_name": "SGLang",
+      "gpu_only": true,
+      "default_util_target": 0.90,
+      "overhead_gb": 1.5,
+      "supports_tp": true,
+      "kv_bytes_per_elem": 2,
+      "cuda_graphs": true,
+      "notes": "Paged-сервер с динамическим распределением KV-пула"
+    }
+  ]
+}
